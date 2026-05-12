@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Green - Système de réservation d'hôtels</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Accueil Hotel Green">
+      <span class="brand-mark">HG</span>
+      <span>
+        <strong>Hotel Green</strong>
+        <small>Reservation d'hotels</small>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="#home">Accueil</a>
+      <a href="#results">Hotels</a>
+      <a href="#dashboard">Espace client</a>
+      <a href="#uml">UML</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="ghost-button" type="button" id="openNotificationsBtn">
+        Notifications <span id="notificationCount" class="count-badge">0</span>
+      </button>
+      <button class="primary-button" type="button" id="loginShortcutBtn">Connexion</button>
+      <span id="connectedUser" class="connected-user">Non connecte</span>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero-section section-block">
+      <div class="hero-copy">
+        <p class="eyebrow">MVP universitaire front-end</p>
+        <h1>Système de réservation d'hôtels</h1>
+        <p>
+          Demo visuelle du parcours client: recherche, chambre, reservation,
+          paiement simule, confirmation, notifications, fidelite et avis.
+        </p>
+      </div>
+
+      <form id="searchForm" class="search-panel" aria-label="Recherche d'hotels">
+        <div class="form-field">
+          <label for="destinationInput">Destination / ville</label>
+          <input id="destinationInput" name="destination" type="text" value="Marrakech" placeholder="Ex: Marrakech">
+        </div>
+        <div class="form-field">
+          <label for="checkinInput">Date arrivee</label>
+          <input id="checkinInput" name="checkin" type="date">
+        </div>
+        <div class="form-field">
+          <label for="checkoutInput">Date depart</label>
+          <input id="checkoutInput" name="checkout" type="date">
+        </div>
+        <div class="form-field small-field">
+          <label for="adultsInput">Adultes</label>
+          <input id="adultsInput" name="adults" type="number" min="1" value="2">
+        </div>
+        <div class="form-field small-field">
+          <label for="childrenInput">Enfants</label>
+          <input id="childrenInput" name="children" type="number" min="0" value="0">
+        </div>
+        <button class="primary-button search-button" type="submit">Rechercher</button>
+      </form>
+    </section>
+
+    <section id="login" class="section-block two-column">
+      <div>
+        <p class="eyebrow">Utilisateur</p>
+        <h2>Connexion simulation</h2>
+        <p class="muted-text">
+          Cette section represente l'entite Utilisateur. Le formulaire ne fait
+          aucune verification de securite; il connecte simplement le client demo.
+        </p>
+      </div>
+      <form id="loginForm" class="simple-card">
+        <div class="form-field">
+          <label for="emailInput">Email</label>
+          <input id="emailInput" type="email" value="amina.client@example.com">
+        </div>
+        <div class="form-field">
+          <label for="passwordInput">Mot de passe</label>
+          <input id="passwordInput" type="password" value="demo1234">
+        </div>
+        <button class="primary-button full-button" type="submit">Se connecter</button>
+        <p id="loginMessage" class="status-line">Utilisateur demo pret.</p>
+      </form>
+    </section>
+
+    <section id="notificationsPanel" class="section-block hidden-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Notification</p>
+          <h2>Messages client</h2>
+        </div>
+        <button class="ghost-button" type="button" id="closeNotificationsBtn">Fermer</button>
+      </div>
+      <div id="notificationsList" class="notification-list"></div>
+    </section>
+
+    <section id="results" class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Hotel</p>
+          <h2>Resultats de recherche</h2>
+        </div>
+        <p id="resultsMeta" class="muted-text">Hotels disponibles pour la demonstration.</p>
+      </div>
+      <div class="content-layout">
+        <aside class="filter-panel" aria-label="Filtres de recherche">
+          <h3>Filtres</h3>
+          <label>
+            Ville
+            <select id="cityFilter">
+              <option value="">Toutes</option>
+            </select>
+          </label>
+          <label>
+            Etoiles minimum
+            <select id="starsFilter">
+              <option value="0">Toutes</option>
+              <option value="3">3 etoiles</option>
+              <option value="4">4 etoiles</option>
+              <option value="5">5 etoiles</option>
+            </select>
+          </label>
+          <label>
+            Note minimum
+            <select id="ratingFilter">
+              <option value="0">Toutes</option>
+              <option value="8">8/10</option>
+              <option value="9">9/10</option>
+            </select>
+          </label>
+          <button id="resetFiltersBtn" class="ghost-button full-button" type="button">Reinitialiser</button>
+        </aside>
+        <div id="hotelCards" class="hotel-grid"></div>
+      </div>
+    </section>
+
+    <section id="details" class="section-block hidden-panel">
+      <div id="hotelDetails"></div>
+    </section>
+
+    <section id="booking" class="section-block hidden-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Reservation</p>
+          <h2>Resume de reservation</h2>
+        </div>
+      </div>
+      <div id="bookingSummary" class="summary-grid"></div>
+    </section>
+
+    <section id="payment" class="section-block hidden-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Paiement</p>
+          <h2>Paiement simule</h2>
+        </div>
+        <p class="muted-text">Deux cas demo: paiement accepte ou refuse.</p>
+      </div>
+      <form id="paymentForm" class="payment-panel">
+        <fieldset>
+          <legend>Methode de paiement</legend>
+          <label><input type="radio" name="paymentMethod" value="Carte bancaire" checked> Carte bancaire</label>
+          <label><input type="radio" name="paymentMethod" value="Paiement a l'hotel"> Cash a l'hotel</label>
+          <label><input type="radio" name="paymentMethod" value="Virement"> Virement</label>
+        </fieldset>
+        <fieldset>
+          <legend>Cas de demonstration</legend>
+          <label><input type="radio" name="paymentResult" value="accepted" checked> Paiement accepte</label>
+          <label><input type="radio" name="paymentResult" value="refused"> Paiement refusé</label>
+        </fieldset>
+        <button class="primary-button" type="submit">Payer</button>
+        <p id="paymentMessage" class="status-line"></p>
+      </form>
+    </section>
+
+    <section id="confirmation" class="section-block hidden-panel">
+      <div id="confirmationCard" class="confirmation-card"></div>
+    </section>
+
+    <section id="dashboard" class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Espace client</p>
+          <h2>Tableau de bord</h2>
+        </div>
+        <button class="ghost-button" type="button" id="clearDemoBtn">Reinitialiser les donnees demo</button>
+      </div>
+      <div class="dashboard-layout">
+        <aside id="clientProfile" class="profile-card"></aside>
+        <div>
+          <div id="loyaltyCard" class="loyalty-card"></div>
+          <div id="reservationsList" class="reservation-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="uml" class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Conception</p>
+          <h2>Entites UML representees</h2>
+        </div>
+      </div>
+      <div class="entity-grid">
+        <article><strong>Utilisateur</strong><span>Profil, role, connexion simulation.</span></article>
+        <article><strong>Hotel</strong><span>Cartes, details, ville, etoiles, note.</span></article>
+        <article><strong>Chambre</strong><span>Types, capacite, prix, disponibilite.</span></article>
+        <article><strong>Disponibilite</strong><span>Statut disponible/indisponible et prix special.</span></article>
+        <article><strong>Reservation</strong><span>Dates, personnes, statut, total.</span></article>
+        <article><strong>Paiement</strong><span>Methode, montant, statut, date.</span></article>
+        <article><strong>Avis</strong><span>Note et commentaire apres reservation.</span></article>
+        <article><strong>Notification</strong><span>Messages de confirmation, paiement, annulation.</span></article>
+        <article><strong>CompteFidélité</strong><span>Points et niveau client.</span></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Demo front-end uniquement - aucun backend, aucune base de donnees, aucun paiement reel.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
